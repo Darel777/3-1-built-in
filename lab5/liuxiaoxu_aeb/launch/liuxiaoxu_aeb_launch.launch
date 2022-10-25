@@ -1,0 +1,7 @@
+<launch>
+
+
+<include file="$(find f1tenth_simulator)/launch/simulator.launch"/>
+<node pkg="liuxiaoxu_aeb" name="safety_node" type="safety_node"/>
+
+</launch>
