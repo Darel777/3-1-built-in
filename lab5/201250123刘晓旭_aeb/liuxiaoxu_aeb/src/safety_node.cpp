@@ -4,10 +4,8 @@
 #include <std_msgs/Bool.h>
 #include <math.h>
 #include <ackermann_msgs/AckermannDriveStamped.h>
-// TODO: include ROS msg type headers and libraries
 
 class Safety {
-// The class that handles emergency braking
 private:
     ros::NodeHandle n;
     double speed;
@@ -19,7 +17,6 @@ private:
     std_msgs::Bool Break;
     float speed_x;  
     float min_ttc; 
-
     void ExecuteAeb()
     {
         ackermann.drive.speed = 0; 
@@ -28,15 +25,10 @@ private:
         BreakPub.publish(Break);
         ROS_INFO("AEB ACtivated");
     }
-
-
-
-
     void GetSpeedCallback(nav_msgs::OdometryConstPtr odom_msg_ptr)
     {
         speed_x = odom_msg_ptr->twist.twist.linear.x; 
     }
-
     void Ttcalculation(sensor_msgs::LaserScanConstPtr scan_msg_ptr)
     {
         float distance;
@@ -59,12 +51,8 @@ private:
                 break;
             }
             
-
-
         }
     }
-    // TODO: create ROS subscribers and publishers
-
 public:
     Safety() {
         n = ros::NodeHandle();
@@ -74,31 +62,13 @@ public:
         OdomSub = n.subscribe("odom", 10, &Safety::GetSpeedCallback, this);
         AckermannPub = n.advertise<ackermann_msgs::AckermannDriveStamped>("brake",10);
         BreakPub = n.advertise<std_msgs::Bool>("brake_bool",10);
-        /*
-        One publisher should publish to the /brake topic with an
-        ackermann_msgs/AckermannDriveStamped brake message.
-        One publisher should publish to the /brake_bool topic with a
-        std_msgs/Bool message.
-        You should also subscribe to the /scan topic to get the
-        sensor_msgs/LaserScan messages and the /odom topic to get
-        the nav_msgs/Odometry messages
-        The subscribers should use the provided odom_callback and 
-        scan_callback as callback methods
-        NOTE that the x component of the linear velocity in odom is the speed
-        */
-
-        // TODO: create ROS subscribers and publishers
         
     }
     void odom_callback(const nav_msgs::Odometry::ConstPtr &odom_msg) {
-        // TODO: update current speed
         speed = 0.0;
     }
-
     void scan_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg) {
-        // TODO: calculate TTC
 
-        // TODO: publish drive/brake message
     }
 
 };
